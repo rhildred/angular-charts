@@ -1,4 +1,4 @@
-angular.module('angularChartsDemoApp', ['ui.bootstrap', 'piechart', 'linechart']);
+angular.module('angularChartsDemoApp', ['piechart', 'linechart']);
 
 function PiechartDemoCtrl($scope) {
    var colours = {
