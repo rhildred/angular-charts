@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="angularChartsDemoApp">
+    <head>
+        <meta charset="utf-8">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.8/angular.min.js"></script>
+        <script src="https://rhildred.github.io/angular-charts/angular-charts-0.0.4.js"></script>
+        <script>
+            angular.module('angularChartsDemoApp', ['piechart', 'linechart']);
+
+            function PiechartDemoCtrl($scope) {
+                var colours = {
+                    0: '#428bca',
+                    1: '#5cb85c',
+                    2: '#5bc0de',
+                    3: '#f0ad4e',
+                    4: '#d9534f'
+                };
+
+                var slices = $scope.slices = [];
+
+                var Slice = function(val) {
+                    this.value = val;
+                    this.colour = colours[slices.length];
+                };
+
+                slices.push(new Slice(50));
+                slices.push(new Slice(200));
+
+                $scope.addSlice = function() {
+                    slices.push(new Slice(10));
+                };
+            };
+
+            function LinechartDemoCtrl($scope) {
+                var colours = {
+                    0: '#428bca',
+                    1: '#5cb85c',
+                    2: '#5bc0de',
+                    3: '#f0ad4e',
+                    4: '#d9534f'
+                };
+
+                var series = $scope.series = [];
+
+                var Series = function(vals) {
+                    this.values = vals;
+                    this.colour = colours[series.length];
+                };
+
+                $scope.addSeries = function() {
+                    var len = series.length + 1;
+                    series.push(new Series([12 * len, 15 * len, 9 * len, 22 * len]));
+                };
+
+                $scope.addSeries();
+                $scope.addSeries();
+            };
+
+        </script>
+
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"/>
+        <title>angular-charts</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <section id="piechart">
+
+                        <div class="page-header">
+                            <h2>Pie Chart</h2>
+                        </div>
+
+                        <div class="row" ng-controller="PiechartDemoCtrl">
+                            <div class="col-md-4">
+                                <piechart radius="100" class="center-block">
+                                    <piechart-slice ng-repeat="slice in slices" value="{{slice.value}}" fill="{{slice.colour}}" stroke="white"/>
+                                </piechart>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row form-group" ng-repeat="slice in slices">
+                                    <input type="number" class="form-control" ng-model="slice.value"></input>
+                            </div>
+                            <div class="row">
+                                <button type="button" class="btn btn-default" ng-click="addSlice()" ng-disabled="slices.length >= 5">Add Slice</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p>
+                                The <strong>piechart directive</strong> uses a default radius of 10, this can be overridden using the <code>radius</code> attribute.
+                            </p>
+                            <p>
+                                The <strong>piechart-slice directive</strong> supports <code>ng-repeat</code>.
+                            </p>
+                        </div>
+                        </div>
+
+
+                    </section>
+
+                <section id="linechart">
+
+                    <div class="page-header">
+                        <h2>Line Chart</h2>
+                    </div>
+
+                    <div class="row" ng-controller="LinechartDemoCtrl">
+                        <div class="col-md-4">
+                            <linechart h="200" w="300" class="center-block">
+                                <linechart-series ng-repeat="s in series" values="{{s.values}}" stroke="{{s.colour}}" stroke-width="2" fill="none"></linechart-series>
+                            </linechart>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row form-group" ng-repeat="s in series">
+                                <div class="col-xs-3" ng-repeat="value in s.values track by $index">
+                                    <input type="number" class="form-control" ng-model="s.values[$index]"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="button" class="btn btn-default" ng-click="addSeries()" ng-disabled="series.length >= 5">Add Series</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <p>
+                            The <strong>linechart directive</strong> uses a default height and width of 200 and 300 respectively, this can be overridden using the <code>h</code> and <code>w</code> attributes.
+                        </p>
+                        <p>
+                            The <strong>linechart-series directive</strong> supports <code>ng-repeat</code>.
+                        </p>
+                    </div>
+                    </div>
+
+
+                </section>
+
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>
